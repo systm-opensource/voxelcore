@@ -1,0 +1,93 @@
+let SessionLoad = 1
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/Developer/tests/voxelcore
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +71 main.cpp
+badd +28 framebuffer.h
+badd +30 framebuffer.cpp
+badd +19 color.h
+badd +10 color.cpp
+badd +21 events.h
+badd +20 display.h
+badd +12 events.cpp
+badd +14 build.sh
+badd +20 voxel.h
+badd +8 voxel.cpp
+badd +63 functions.cpp
+badd +3 defines.h
+badd +38 voxelgrid.h
+badd +16 voxelgrid.cpp
+badd +17 display.cpp
+badd +6 camera.h
+argglobal
+silent! argdel *
+$argadd main.cpp
+edit voxelgrid.h
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=1 winminwidth=1 winheight=1 winwidth=1
+exe 'vert 1resize ' . ((&columns * 87 + 87) / 174)
+exe 'vert 2resize ' . ((&columns * 86 + 87) / 174)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 26 - ((25 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+26
+normal! 0
+wincmd w
+argglobal
+if bufexists('functions.cpp') | buffer functions.cpp | else | edit functions.cpp | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 71 - ((6 * winheight(0) + 22) / 44)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+71
+normal! 025|
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 87 + 87) / 174)
+exe 'vert 2resize ' . ((&columns * 86 + 87) / 174)
+tabnext 1
+if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToO
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . fnameescape(s:sx)
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :
