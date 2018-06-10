@@ -66,10 +66,13 @@ void addVoxelsToGrid(std::vector<voxel> v, voxelgrid *g)
 
 
 // Determines if a voxel grid is within the frustum of the camera
-bool isVoxelgridInFrustum(voxelgrid *g, camera *cm)
+bool isVoxelgridInFrustum(voxelgrid *g, camera *cm, framebuffer *fb)
 {
 	// By default it's not... we want to increase performance.
 	bool inFrustum = true;
+
+	int cx = fb->ScreenWidth() / 2;
+	int cy = fb->ScreenHeight() / 2;
 
 	// Temp coords
 	vertex vgp(g->Position.x, g->Position.y, g->Position.z);
@@ -79,12 +82,22 @@ bool isVoxelgridInFrustum(voxelgrid *g, camera *cm)
 	vgp.y -= cm->Position.y;
 	vgp.z -= cm->Position.z;
 
+	// Only consider what's actually in our frustum
+	float f = (float)fb->FOV / vgp.z;
+	pixel np = project(cx, cy, vgp.x, vgp.y, f);
+	if (np.x > 0 && np.y < fb->ScreenWidth() && np.y > 0 && np.y < fb->ScreenHeight() && vgp.z > g->getRadius())
+	{ inFrustum = true; } // TODO: INSERT DEPTH TEST FOR CLIPPING AND LOD
+	else
+	{ inFrustum = false; }
+	
+	/*
 	// Only consider what lies ahead of us
 	if (vgp.z < 0.0f) { inFrustum = false; }
 	else
 	{
 
 	}
+	*/
 
 	// Is it visible?
 	return inFrustum;
@@ -95,10 +108,11 @@ bool isVoxelgridInFrustum(voxelgrid *g, camera *cm)
 // Draws the outline of a voxel grid
 void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 {
-	if (isVoxelgridInFrustum(g, cm) == true)
+	int cx = fb->ScreenWidth() / 2;
+	int cy = fb->ScreenHeight() / 2;
+
+	if (isVoxelgridInFrustum(g, cm, fb) == true)
 	{
-		int cx = fb->ScreenWidth() / 2;
-		int cy = fb->ScreenHeight() / 2;
 		std::vector<vertex> v = g->GetOutlineVertices();
 		std::vector<pixel> p;
 
@@ -120,6 +134,14 @@ void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 		fb->drawLine(p[3], p[2], c);
 		fb->drawLine(p[4], p[5], c);
 		fb->drawLine(p[7], p[6], c);
+		fb->drawLine(p[3], p[0], c);
+		fb->drawLine(p[2], p[1], c);
+		fb->drawLine(p[7], p[4], c);
+		fb->drawLine(p[6], p[5], c);
+		fb->drawLine(p[0], p[4], c);
+		fb->drawLine(p[1], p[5], c);
+		fb->drawLine(p[3], p[7], c);
+		fb->drawLine(p[2], p[6], c);
 		}
 }
 

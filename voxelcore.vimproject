@@ -13,15 +13,18 @@ badd +11 voxel.h
 badd +17 font.h
 badd +23 fontdata.h
 badd +0 fontdata.cpp
-badd +62 font.cpp
+badd +65 font.cpp
 badd +11 run.sh
-badd +129 functions.cpp
+badd +161 functions.cpp
 badd +49 framebuffer.h
 badd +1 pixel.h
-badd +88 main.cpp
+badd +81 main.cpp
+badd +1 color.cpp
+badd +1 color.h
+badd +192 framebuffer.cpp
 argglobal
 silent! argdel *
-edit font.h
+edit framebuffer.h
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -43,15 +46,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 20) / 41)
+let s:l = 69 - ((15 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 0
+69
+normal! 043|
 wincmd w
 argglobal
-if bufexists('functions.cpp') | buffer functions.cpp | else | edit functions.cpp | endif
+if bufexists('main.cpp') | buffer main.cpp | else | edit main.cpp | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -61,12 +64,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 156 - ((32 * winheight(0) + 20) / 41)
+let s:l = 84 - ((23 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-156
-normal! 032|
+84
+normal! 040|
 wincmd w
 2wincmd w
 exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)

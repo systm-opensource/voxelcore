@@ -36,6 +36,9 @@ public:
 	// Clears the voxels when LOD changes
 	void clearVoxels();
 
+	// Get radius of voxelgrid
+	float getRadius();
+
 	// Provides the eight vertices that make up the border of the grid
 	std::vector<vertex> GetOutlineVertices();
 };

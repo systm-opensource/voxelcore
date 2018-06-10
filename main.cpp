@@ -59,7 +59,7 @@ int main(int argc, char **argv[])
 	// Place it somewhere for the kicks
 	Voxelgrid->Position.x = 0.0f;
 	Voxelgrid->Position.y = 0.0f;
-	Voxelgrid->Position.z = 117.2f;
+	Voxelgrid->Position.z = 20.0f;
 
 	// For FPS tracking
 	fps_start = SDL_GetTicks();
@@ -100,12 +100,13 @@ int main(int argc, char **argv[])
 		{ render=false; }
 
 		// WASD-Keys for the camera
-		if (Events->KeyPressed == SDLK_w) { Camera->moveForward(2.0f); }
-		if (Events->KeyPressed == SDLK_s) { Camera->moveBackward(2.0f); }
-		if (Events->KeyPressed == SDLK_a) { Camera->moveLeft(2.0f); }
-		if (Events->KeyPressed == SDLK_d) { Camera->moveRight(2.0f); }
-		if (Events->KeyPressed == SDLK_q) { Camera->moveUp(2.0f); }
-		if (Events->KeyPressed == SDLK_e) { Camera->moveDown(2.0f); }
+		float camspeed = 0.2f;
+		if (Events->KeyPressed == SDLK_w) { Camera->moveForward(camspeed); }
+		if (Events->KeyPressed == SDLK_s) { Camera->moveBackward(camspeed); }
+		if (Events->KeyPressed == SDLK_a) { Camera->moveLeft(camspeed); }
+		if (Events->KeyPressed == SDLK_d) { Camera->moveRight(camspeed); }
+		if (Events->KeyPressed == SDLK_q) { Camera->moveUp(camspeed); }
+		if (Events->KeyPressed == SDLK_e) { Camera->moveDown(camspeed); }
 
 		
 

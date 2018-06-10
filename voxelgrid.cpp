@@ -18,11 +18,11 @@ std::vector<vertex> voxelgrid::GetOutlineVertices()
 	std::vector<vertex> v;
 
 	// X Radius
-	float r_x = (float)size_w / 2;
+	float r_x = ((float)size_w / 2) * VOXELSIZE;
 	// Y Radius
-	float r_y = (float)size_h / 2;
+	float r_y = ((float)size_h / 2) * VOXELSIZE;
 	// Z Radius
-	float r_z = (float)size_d / 2;
+	float r_z = ((float)size_d / 2) * VOXELSIZE;
 
 	// OK! We can now generate the vertices
 	
@@ -45,4 +45,25 @@ std::vector<vertex> voxelgrid::GetOutlineVertices()
 	v.push_back(v8);
 
 	return v;
+}
+
+
+float voxelgrid::getRadius()
+{
+	float r;
+
+	// X Radius
+	float r_x = ((float)size_w / 2) * VOXELSIZE;
+	// Y Radius
+	float r_y = ((float)size_h / 2) * VOXELSIZE;
+	// Z Radius
+	float r_z = ((float)size_d / 2) * VOXELSIZE;
+
+	// Get some value
+	r=r_x;
+
+	if (r_y > r) { r=r_y; }
+	if (r_z > r) { r=r_z; }
+
+	return r;
 }
