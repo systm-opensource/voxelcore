@@ -44,6 +44,9 @@ public:
 
 	// Resize the buffer. Used when the window resizes, for example
 	void resizeBuffer(rectangle newSize);
+	
+	// Sets the color of one particular pixel to the specified color
+	void setPixelToColor(int x, int y, color c);
 
 	// Draws a line between two points with the specified color
 	void drawLine(pixel p1, pixel p2, color c);
@@ -61,9 +64,12 @@ private:
 
 	// Finds the exact position of a pixel in the pixel data
 	int _indexOfPixel(int x, int y);
-	
-	// Sets the color of one particular pixel to the specified color
-	void setPixelToColor(int x, int y, color c);
+
+	// Blends a pixel color with another color
+	color _blendColors(color c1, color c2);
+
+	// Finds out if a pixel has a value already
+	bool _pixelUsed(pixel p);
 };
 
 #endif

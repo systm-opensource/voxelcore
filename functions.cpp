@@ -16,6 +16,7 @@
 #include "vertex.h"
 #include "voxelgrid.h"
 #include "framebuffer.h"
+#include "font.h"
 
 // Rotates a vertex
 float* rotate(float x, float y, float rad)
@@ -120,6 +121,45 @@ void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 		fb->drawLine(p[4], p[5], c);
 		fb->drawLine(p[7], p[6], c);
 		}
+}
+
+
+// Writes out a string with the referenced font, into the referenced
+// framebuffer, with the specified color, at the specified pixel location.
+void writeString(std::string t, font *f, framebuffer *fb, color c, pixel p)
+{
+	// Pixel start location
+	int tx = p.x;
+	int ty = p.y;
+
+	// Go through each character
+	for (int i=0; i<t.length(); i++)
+	{
+		// ASCII code of character
+		int ascii = t[i];
+
+		// Get character position in font data
+		int charpos = -1;
+		for (int j=0; j<f->FontData.size(); j++)
+		{
+			if (f->FontData[j].ASCIICode == ascii)
+			{ charpos = j; break; }
+		}
+
+		// We now know where the character is, so render it
+		if (charpos != -1)
+		{
+			for (int j=0; j<f->FontData[charpos].X.size(); j++)
+			{
+				int act_x = tx + f->FontData[charpos].X[j];
+				int act_y = ty + f->FontData[charpos].Y[j];
+				float a_f = f->FontData[charpos].PixelAlpha[j] * 255;
+				int a_i = (int)a_f;
+				fb->setPixelToColor(act_x, act_y, color(c.r, c.g, c.b, a_i));
+			}
+			tx = tx+f->FontData[charpos].CharacterWidth;
+		}
+	}
 }
 
 

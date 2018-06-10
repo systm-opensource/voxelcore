@@ -9,9 +9,11 @@
 #include "events.h"
 #include "framebuffer.h"
 #include "voxelgrid.h"
+#include "font.h"
 
 // Forward...
 void drawVoxelgridOutline(voxelgrid *g, framebuffer *b, camera *cm, int fov);
+void writeString(std::string t, font *f, framebuffer *fb, color c, pixel p);
 
 // Do we want to see the outline of voxelgrids?
 bool showVoxelgridOutline = true;
@@ -31,6 +33,9 @@ events *Events;
 
 // A camera!
 camera *Camera;
+
+// A font to render text
+font *Font;
 
 // For now we'll use only one voxel grid
 voxelgrid *Voxelgrid;
@@ -60,14 +65,23 @@ int main(int argc, char **argv[])
 	fps_start = SDL_GetTicks();
 	fps_then = SDL_GetTicks();
 
+	// Load a font
+	Font = new font();
+	Font->loadFont("font/NotoSans20.voxelfont");
+
 	// Main render loop
 	bool render=true;
+	int debugfps = 0;
+
 	while (render==true)
 	{
 		FB->clear();
 
 		if (showVoxelgridOutline == true)
 		{ drawVoxelgridOutline(Voxelgrid, FB, Camera, FB->FOV);  }
+		
+		writeString("FPS: ", Font, FB, color(255, 255, 255, 255), pixel(50, 50));
+		writeString(std::to_string(debugfps), Font, FB, color(255, 255, 255, 255), pixel(120, 50));
 
 		//FB->clear();
 		Display->flip(FB);
@@ -76,8 +90,9 @@ int main(int argc, char **argv[])
 		fps++;
 
 		fps_start = SDL_GetTicks();
+		
 		if (fps_start - fps_then >= 1000)
-		{ std::cout << "FPS: " << fps << "\n"; fps = 0; fps_then = fps_start; }
+		{ debugfps = fps; fps = 0; fps_then = fps_start; }
 
 		// Check events
 		Events->handleEvent();
@@ -91,6 +106,8 @@ int main(int argc, char **argv[])
 		if (Events->KeyPressed == SDLK_d) { Camera->moveRight(2.0f); }
 		if (Events->KeyPressed == SDLK_q) { Camera->moveUp(2.0f); }
 		if (Events->KeyPressed == SDLK_e) { Camera->moveDown(2.0f); }
+
+		
 
 		//SDL_Delay(16);
 	}

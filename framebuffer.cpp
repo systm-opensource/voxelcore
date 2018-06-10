@@ -23,9 +23,9 @@ void framebuffer::setBackgroundColor(color bg)
 
 void framebuffer::clear()
 {
-	memset(Pixels, 0, numberPixels*4);
+	//memset(Pixels, 0, numberPixels*4);
 	// Copy background color first
-	//memcpy(Pixels, BackgroundPixels, numberPixels*4);
+	memcpy(Pixels, BackgroundPixels, numberPixels*4);
 }
 
 
@@ -56,10 +56,13 @@ void framebuffer::setPixelToColor(int x, int y, color c)
 		y < ScreenSize.h)
 	{
 		int pix = _indexOfPixel(x, y);
-		Pixels[pix+3] = 255; // No blending in first test
-		Pixels[pix+2] = c.r;
-		Pixels[pix+1] = c.g;
-		Pixels[pix+0] = c.b;
+
+		color o(Pixels[pix+2], Pixels[pix+1], Pixels[pix+0], Pixels[pix+3]);
+		color n = _blendColors(o, c);
+		Pixels[pix+3] = n.a;
+		Pixels[pix+2] = n.r;
+		Pixels[pix+1] = n.g;
+		Pixels[pix+0] = n.b;
 	}
 }
 
@@ -136,6 +139,66 @@ int framebuffer::_indexOfPixel(int x, int y)
 	int xloc   = x*4;
 	pos = texw * yloc + xloc;
 	return pos;
+}
+
+
+color framebuffer::_blendColors(color c1, color c2)
+{
+	color result(0,0,0,0);
+
+	// Get float alpha of OLD color
+	float old_a = (float)c1.a / 255.0f;
+
+	// Get float alpha of NEW color
+	float new_a = (float)c2.a / 255.0f;
+
+	// Float values for old color
+	float old_r = (float)c1.r / 255.0f;
+	float old_g = (float)c1.g / 255.0f;
+	float old_b = (float)c1.b / 255.0f;
+	// Float values for new color
+	float new_r = (float)c2.r / 255.0f;
+	float new_g = (float)c2.g / 255.0f;
+	float new_b = (float)c2.b / 255.0f;
+
+	// Float values for blending results
+	float blend_r = new_a * new_r + (1.0f - new_a) * old_r;	
+	float blend_g = new_a * new_g + (1.0f - new_a) * old_g;	
+	float blend_b = new_a * new_b + (1.0f - new_a) * old_b;	
+	float blend_a = new_a * new_a + (1.0f - new_a) * old_a;
+
+	// Update to correct values:
+	blend_r = blend_r * 255;
+	blend_g = blend_g * 255;
+	blend_b = blend_b * 255;
+	blend_a = blend_a * 255;
+
+	// Now convert those directly into their int places
+	result.r = blend_r;
+	result.g = blend_g;
+	result.b = blend_b;
+	result.a = blend_a;
+
+	// Return the shaded pixel color
+	return result;
+}
+
+
+bool framebuffer::_pixelUsed(pixel p)
+{
+	bool used = false;
+	int index = _indexOfPixel(p.x, p.y);
+	if (
+		Pixels[index+3] == 255 &&
+		Pixels[index+2] == BackgroundColor.r &&
+		Pixels[index+1] == BackgroundColor.g &&
+		Pixels[index+0] == BackgroundColor.b
+	   )
+	{ used = false; }
+	else
+	{ used = true; }
+
+	return used;
 }
 
 

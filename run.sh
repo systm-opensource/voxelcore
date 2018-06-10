@@ -7,6 +7,8 @@ g++ \
 	color.cpp \
 	display.cpp \
 	events.cpp \
+	fileio.cpp \
+	font.cpp \
 	framebuffer.cpp \
 	functions.cpp \
 	rectangle.cpp \
