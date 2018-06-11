@@ -121,9 +121,9 @@ void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 		for (int i=0; i<v.size(); i++)
 		{
 			// First rotate the grid...
-			float *t1 = rotate(v[i].x, v[i].z, cm->Rotation.y);
+			float *t1 = rotate(v[i].x, v[i].z, g->Rotation.y);
 			v[i].x = t1[0]; v[i].z = t1[1];
-			float *t2 = rotate(v[i].y, v[i].z, cm->Rotation.x);
+			float *t2 = rotate(v[i].y, v[i].z, g->Rotation.x);
 			v[i].y = t2[0]; v[i].z = t2[1];
 
 			// THEN translate...
@@ -132,6 +132,10 @@ void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 			v[i].z -= cm->Position.z;
 
 			// AND rotate again! This time it's camera rotation
+			float *t3 = rotate(v[i].x, v[i].z, cm->Rotation.y);
+			v[i].x = t3[0]; v[i].z = t3[1];
+			float *t4 = rotate(v[i].y, v[i].z, cm->Rotation.x);
+			v[i].y = t4[0]; v[i].z = t4[1];
 
 			float f = (float)fov / v[i].z;
 

@@ -4,10 +4,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <time.h>
 #include "camera.h"
 #include "display.h"
 #include "events.h"
 #include "framebuffer.h"
+#include "voxel.h"
 #include "voxelgrid.h"
 #include "font.h"
 
@@ -62,6 +64,48 @@ int main(int argc, char **argv[])
 	Voxelgrid->Position.x = 0.0f;
 	Voxelgrid->Position.y = 0.0f;
 	Voxelgrid->Position.z = 0.0f;
+
+	// OK! So let's generate some random voxel data
+	srand (time(NULL));
+	
+	// First generate the colors
+	int numcols = 0;
+	while (numcols < 500)
+	{
+		color c(rand()%255, rand()%255, rand()%255);
+		bool cexist = false;
+		for (int i=0; i<Voxelgrid->Colors.size(); i++)
+		{
+			if (Voxelgrid->Colors[i].r == c.r &&
+				Voxelgrid->Colors[i].g == c.g &&
+				Voxelgrid->Colors[i].b == c.b)
+			{ cexist = true; break; }
+		}
+		if (cexist == false) { Voxelgrid->Colors.push_back(c); numcols++; }
+	}
+
+	// Now generate 5000 voxels with random locations and random colors
+	int numvox = 0;
+	while (numvox < 5000)
+	{
+		voxel v(rand()%50, rand()%50, rand()%50, rand()%500);
+		bool vexist = false;
+		for (int i=0; i<Voxelgrid->Voxels.size(); i++)
+		{
+			if (Voxelgrid->Voxels[i].x == v.x &&
+				Voxelgrid->Voxels[i].y == v.y &&
+				Voxelgrid->Voxels[i].z == v.z)
+			{ vexist = true; break; }
+		}
+		if (vexist == false)
+		{
+			Voxelgrid->Voxels.push_back(v);
+			numvox++;
+		}
+	}
+
+	// Voxels added
+
 
 	// For FPS tracking
 	fps_start = SDL_GetTicks();

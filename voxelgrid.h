@@ -13,6 +13,7 @@
 #include "defines.h"
 #include "vertex.h"
 #include "voxel.h"
+#include "color.h"
 
 class voxelgrid
 {
@@ -29,6 +30,9 @@ public:
 
 	// And the voxels themselves
 	std::vector<voxel> Voxels;
+
+	// The pool of all individual colors in this grid
+	std::vector<color> Colors;
 
 	// This cannot have a blank constructor, so you need to create it manually
 	voxelgrid(int w, int h, int d);
