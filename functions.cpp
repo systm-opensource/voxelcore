@@ -18,6 +18,16 @@
 #include "framebuffer.h"
 #include "font.h"
 
+
+// Provides the distance between two points in 3D space. This is mostly used
+// for depth and frustum testing.
+float distanceBetween(vertex v1, vertex v2)
+{
+	float dist = sqrt(pow(v1.x-v2.x,2.0f) + pow(v1.y-v2.y, 2.0f) + pow(v1.z-v2.z, 2.0f));
+	return dist;
+}
+
+
 // Rotates a vertex
 float* rotate(float x, float y, float rad)
 {
@@ -85,19 +95,11 @@ bool isVoxelgridInFrustum(voxelgrid *g, camera *cm, framebuffer *fb)
 	// Only consider what's actually in our frustum
 	float f = (float)fb->FOV / vgp.z;
 	pixel np = project(cx, cy, vgp.x, vgp.y, f);
-	if (np.x > 0 && np.y < fb->ScreenWidth() && np.y > 0 && np.y < fb->ScreenHeight() && vgp.z > g->getRadius())
-	{ inFrustum = true; } // TODO: INSERT DEPTH TEST FOR CLIPPING AND LOD
+	float dist = distanceBetween(g->Position, cm->Position);
+	if (np.x > 0 && np.y < fb->ScreenWidth() && np.y > 0 && np.y < fb->ScreenHeight() && vgp.z > g->getRadius() && dist < CAMERACLIP)
+	{ inFrustum = true; }
 	else
 	{ inFrustum = false; }
-	
-	/*
-	// Only consider what lies ahead of us
-	if (vgp.z < 0.0f) { inFrustum = false; }
-	else
-	{
-
-	}
-	*/
 
 	// Is it visible?
 	return inFrustum;
@@ -118,9 +120,18 @@ void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 
 		for (int i=0; i<v.size(); i++)
 		{
+			// First rotate the grid...
+			float *t1 = rotate(v[i].x, v[i].z, cm->Rotation.y);
+			v[i].x = t1[0]; v[i].z = t1[1];
+			float *t2 = rotate(v[i].y, v[i].z, cm->Rotation.x);
+			v[i].y = t2[0]; v[i].z = t2[1];
+
+			// THEN translate...
 			v[i].x -= cm->Position.x;
 			v[i].y -= cm->Position.y;
 			v[i].z -= cm->Position.z;
+
+			// AND rotate again! This time it's camera rotation
 
 			float f = (float)fov / v[i].z;
 

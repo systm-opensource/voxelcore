@@ -31,10 +31,10 @@ public:
 	void moveDown(float f);
 	void moveForward(float f);
 	void moveBackward(float f);
-	//void rotateLeft(float f);
-	//void rotateRight(float f);
-	//void rotateUp(float f);
-	//void rotateDown(float f);
+	void rotateLeft(float f);
+	void rotateRight(float f);
+	void rotateUp(float f);
+	void rotateDown(float f);
 };
 
 #endif

@@ -10,4 +10,7 @@ void camera::moveUp(float f) 		{ Position.y = Position.y + f; }
 void camera::moveDown(float f) 		{ Position.y = Position.y - f; }
 void camera::moveForward(float f) 	{ Position.z = Position.z + f; }
 void camera::moveBackward(float f) 	{ Position.z = Position.z - f; }
-
+void camera::rotateRight(float f) 	{ Rotation.y = Rotation.y + f; }
+void camera::rotateLeft(float f) 	{ Rotation.y = Rotation.y - f; }
+void camera::rotateUp(float f) 		{ Rotation.x = Rotation.x - f; }
+void camera::rotateDown(float f) 	{ Rotation.x = Rotation.x + f; }
