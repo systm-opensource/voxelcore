@@ -33,6 +33,10 @@ public:
 	// The FOV to be used
 	int FOV;
 
+	// Center of screen
+	int CX;
+	int CY;
+
 	// Needs screen dimensions to allocate the buffer
 	framebuffer(int w, int h);
 

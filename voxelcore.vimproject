@@ -7,29 +7,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +22 fileio.h
-badd +16 fileio.cpp
-badd +11 voxel.h
-badd +17 font.h
-badd +23 fontdata.h
-badd +0 fontdata.cpp
-badd +65 font.cpp
-badd +11 run.sh
-badd +124 functions.cpp
-badd +27 framebuffer.h
-badd +1 pixel.h
-badd +127 main.cpp
-badd +1 color.cpp
-badd +1 color.h
-badd +192 framebuffer.cpp
-badd +40 voxelgrid.h
-badd +60 voxelgrid.cpp
-badd +6 defines.h
-badd +37 camera.h
-badd +16 camera.cpp
+badd +245 functions.cpp
+badd +2 voxelgrid.h
+badd +27 voxelgridnode.h
+badd +19 main.cpp
 argglobal
 silent! argdel *
-edit voxelgrid.h
+edit functions.cpp
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -39,8 +23,8 @@ set nosplitbelow
 set nosplitright
 wincmd t
 set winminheight=1 winminwidth=1 winheight=1 winwidth=1
-exe 'vert 1resize ' . ((&columns * 85 + 86) / 173)
-exe 'vert 2resize ' . ((&columns * 87 + 86) / 173)
+exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)
+exe 'vert 2resize ' . ((&columns * 86 + 86) / 173)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -51,12 +35,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 40 - ((35 * winheight(0) + 21) / 42)
+let s:l = 292 - ((34 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-40
-normal! 0
+292
+normal! 026|
 wincmd w
 argglobal
 if bufexists('functions.cpp') | buffer functions.cpp | else | edit functions.cpp | endif
@@ -69,16 +53,16 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 127 - ((23 * winheight(0) + 21) / 42)
+let s:l = 295 - ((18 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-127
-normal! 031|
+295
+normal! 061|
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 85 + 86) / 173)
-exe 'vert 2resize ' . ((&columns * 87 + 86) / 173)
+exe 'vert 1resize ' . ((&columns * 86 + 86) / 173)
+exe 'vert 2resize ' . ((&columns * 86 + 86) / 173)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

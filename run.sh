@@ -16,6 +16,7 @@ g++ \
 	vertex.cpp \
 	voxel.cpp \
 	voxelgrid.cpp \
+	voxelgridnode.cpp \
 	main.cpp \
 -I/usr/include -I./ -std=c++11 -w -fpermissive -Wfatal-errors -o ./voxelcore -lSDL2
 

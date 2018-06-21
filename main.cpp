@@ -17,6 +17,8 @@
 void drawVoxelgridOutline(voxelgrid *g, framebuffer *b, camera *cm, int fov);
 void writeString(std::string t, font *f, framebuffer *fb, color c, pixel p);
 float distanceBetween(vertex v1, vertex v2);
+void adjustVoxelgridPosition(voxelgrid *g, framebuffer *fb, camera *cm);
+void renderVoxels(voxelgrid *g, framebuffer *fb, camera *cm);
 
 // Do we want to see the outline of voxelgrids?
 bool showVoxelgridOutline = true;
@@ -59,7 +61,7 @@ int main(int argc, char **argv[])
 	Camera->Position.z = -20.0f;
 
 	// Set up the voxel grid
-	Voxelgrid = new voxelgrid(50, 50, 50);
+	Voxelgrid = new voxelgrid(50);
 	// Place it somewhere for the kicks
 	Voxelgrid->Position.x = 0.0f;
 	Voxelgrid->Position.y = 0.0f;
@@ -124,6 +126,14 @@ int main(int argc, char **argv[])
 	// Camera rotation speed
 	float camrot = 0.025f;
 
+	// Did the camera move?
+	bool camMoved = false;
+	// Did the model move?
+	bool gridMoved = false;
+	
+	// One time adjustment
+	adjustVoxelgridPosition(Voxelgrid, FB, Camera);
+
 	while (render==true)
 	{
 		FB->clear();
@@ -131,17 +141,18 @@ int main(int argc, char **argv[])
 		if (showVoxelgridOutline == true)
 		{ drawVoxelgridOutline(Voxelgrid, FB, Camera, FB->FOV);  }
 		
+		//renderVoxels(Voxelgrid, FB, Camera);
+
+		// Some informative texts
 		std::string fps_str = "FPS: ";
 		fps_str.append(std::to_string(debugfps));
 		writeString(fps_str, Font, FB, color(255, 255, 255, 255), pixel(50, 50));
-
 		std::string dist_str = "Distance: ";
 		dist_str.append(std::to_string(distanceBetween(Voxelgrid->Position, Camera->Position)));
 		dist_str.append(" m");
 		writeString(dist_str, Font, FB, color(255, 255, 255, 255), pixel(50, 80));
-		
 
-		//FB->clear();
+		// Render what we have
 		Display->flip(FB);
 
 		// One cycle done
@@ -170,6 +181,8 @@ int main(int argc, char **argv[])
 		if (Events->KeyPressed == SDLK_LEFT)  { Camera->rotateLeft(camrot); }
 		if (Events->KeyPressed == SDLK_UP)    { Camera->rotateUp(camrot); }
 		if (Events->KeyPressed == SDLK_DOWN)  { Camera->rotateDown(camrot); }
+
+		if (Events->KeyPressed != NULL) { adjustVoxelgridPosition(Voxelgrid, FB, Camera); }
 
 		//SDL_Delay(16);
 	}

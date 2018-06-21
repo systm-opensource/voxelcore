@@ -2,7 +2,7 @@
 #include "framebuffer.h"
 
 framebuffer::framebuffer(int w, int h)
-{ FOV=std::min(w, h); resizeBuffer(rectangle(0,0,w,h)); }
+{ FOV=std::min(w, h); resizeBuffer(rectangle(0,0,w,h)); CX = w/2; CY=h/2; }
 
 
 void framebuffer::setBackgroundColor(color bg)
