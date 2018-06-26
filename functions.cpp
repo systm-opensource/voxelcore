@@ -78,7 +78,7 @@ void adjustVoxelgridPosition(voxelgrid *g, framebuffer *fb, camera *cm)
 	vgp.x -= cm->Position.x;
 	vgp.y -= cm->Position.y;
 	vgp.z -= cm->Position.z;
-	
+
 	// AND rotate again! This time it's camera rotation
 	float *t3 = rotate(vgp.x, vgp.z, cm->Rotation.y);
 	vgp.x = t3[0]; vgp.z = t3[1];
@@ -101,7 +101,7 @@ void adjustVoxelgridPosition(voxelgrid *g, framebuffer *fb, camera *cm)
 vertex* adjustVerticesToScreenPosition(vertex *v, int vertamount, voxelgrid *g, framebuffer *fb, camera *cm)
 {
 	// The set...
-	vertex *adj = new vertex[vertamount]; 
+	vertex *adj = new vertex[vertamount];
 
 	// Adjust verts...
 	for (int i=0; i<vertamount; i++)
@@ -129,7 +129,7 @@ vertex* adjustVerticesToScreenPosition(vertex *v, int vertamount, voxelgrid *g, 
 		t->x = t3[0]; t->z = t3[1];
 		float *t4 = rotate(t->y, t->z, cm->Rotation.x);
 		t->y = t4[0]; t->z = t4[1];
-		
+
 		// Delete the calculation addresses
 		delete t1; delete t2; delete t3; delete t4;
 
@@ -175,9 +175,9 @@ bool isVoxelgridInFrustum(voxelgrid *g, camera *cm, framebuffer *fb)
 	// Only consider what's actually in our frustum
 	float f = (float)fb->FOV / g->VirtualPosition.z;
 	pixel np = project(fb->CX, fb->CY, g->VirtualPosition.x, g->VirtualPosition.y, f);
-	
+
 	float dist = distanceBetween(g->Position, cm->Position);
-	
+
 	if (np.x > 0 && np.x < fb->ScreenWidth() && np.y > 0 && np.y < fb->ScreenHeight() && g->VirtualPosition.z > g->getRadius() && dist < CAMERACLIP)
 	{ inFrustum = true; }
 	else
@@ -202,7 +202,7 @@ void drawVoxelgridOutline(voxelgrid *g, framebuffer *fb, camera *cm, int fov)
 		pixel *p = new pixel[8];
 
 		for (int i=0; i<8; i++)
-		{	
+		{
 			float f = (float)fov / va[i].z;
 			p[i] = project(fb->CX, fb->CY, va[i].x, va[i].y, f);
 		}
@@ -298,86 +298,19 @@ void traverseVoxelGrid(voxelgrid *v, camera *c, framebuffer *f)
 }
 
 
-// Finds out of the voxel at the specified location is used.
-bool voxelUsedInGrid(voxelgrid *g, int x, int y, int z)
-{
-	bool used = false;
-	for (int i=0; i<g->Voxels.size(); i++)
-	{
-		if (g->Voxels[i].x == x && g->Voxels[i].y == y && g->Voxels[i].z == z)
-		{ used = true; break; }
-	}
-	return used;
-}
-
-
-// Generates an octree of a root node and returns that list.
-// List contains nodes which contains voxels only
-std::vector<voxelgridnode> generateOctreeNodes(voxelgridnode *n, voxelgrid *g, camera *cm)
-{
-	// The vector that contains nodes with voxels
-	std::vector<voxelgridnode> nodes;
-	
-	// A node is always half the size of its parent node, therefore:
-	float size = n->Size / 2.0f;
-
-	if (size > VOXELSIZE)
-	{
-		float rds = size / 2.0f;
-		vertex p = n->Position;
-
-		// No matter what, generate the eight center vertices for the subnodes
-		std::vector<vertex> v;
-		v.push_back(vertex( p.x-rds, p.y-rds, p.z-rds ) );
-		v.push_back(vertex( p.x+rds, p.y-rds, p.z-rds ) );
-		v.push_back(vertex( p.x+rds, p.y-rds, p.z+rds ) );
-		v.push_back(vertex( p.x-rds, p.y-rds, p.z+rds ) );
-		v.push_back(vertex( p.x-rds, p.y+rds, p.z-rds ) );
-		v.push_back(vertex( p.x+rds, p.y+rds, p.z-rds ) );
-		v.push_back(vertex( p.x+rds, p.y+rds, p.z+rds ) );
-		v.push_back(vertex( p.x-rds, p.y+rds, p.z+rds ) );
-
-		// Walk through the nodes and check for the existence of voxels. If there
-		// are any, consider the node as a candidate. If it has voxels and is of
-		// size 0.1, we are at the smallest possible size.
-		for (int i=0; i<8; i++)
-		{
-			// Generate the node
-			voxelgridnode nn(v[i]);
-			nn.Parent = n;
-
-			// Dimension ranges for this node
-			float low_x, high_x, low_y, high_y, low_z, high_z;
-
-			// Ranges
-			low_x = v[i].x - rds; high_x = v[i].x + rds;
-			low_y = v[i].y - rds; high_y = v[i].y + rds;
-			low_z = v[i].z - rds; high_z = v[i].z + rds;
-
-			// Check if there are voxels
-			for (int j=0; j<g->Voxels.size(); j++)
-			{
-				// Convert voxel position to actual position
-				vertex vp;
-				vp.x = g->Voxels[j].x * VOXELSIZE;
-				vp.y = g->Voxels[j].y * VOXELSIZE;
-				vp.z = g->Voxels[j].z * VOXELSIZE;
-
-				if (vp.x >= low_x && vp.x <= high_x && vp.y >= low_y && vp.y <= high_y && vp.z >= low_z && vp.z <= high_z)
-				{  }
-			}
-		}
-	}
-
-	if (size == VOXELSIZE)
-	{
-		// We now have to check if this smallest possible node has a voxel
-
-	}
-
-	return nodes;
-}
-
+// This function opens the specified octree file, checks if it is a valid file,
+// and if it is, provides the finished voxelgrid with a link to the file stream
+// as a finished object.
+//
+// The voxelgrid (a model, if you will) will then be dynamically rendered as it
+// is typical for an SVO.
+//
+// Be sure to delete this pointer once you no longer need it.
+//voxelgrid* loadOctreeModelFromFile(std::string filename)
+//{
+	//voxelgrid *g = new voxelgrid(filename);
+	//return g;
+//}
 
 
 // Small test
@@ -403,7 +336,7 @@ void renderVoxels(voxelgrid *g, framebuffer *fb, camera *cm)
 		float f = (float)fb->FOV / v2[i].z;
 		pixel np = project(fb->CX, fb->CY, v2[i].x, v2[i].y, f);
 		int col = g->Voxels[i].c;
-		fb->setPixelToColor(np.x, np.y, g->Colors[col]);	
+		fb->setPixelToColor(np.x, np.y, g->Colors[col]);
 	}
 	v2.clear();
 	*/

@@ -1,5 +1,5 @@
 
 #include "voxelgridnode.h"
 
-voxelgridnode::voxelgridnode(vertex p)
-{ Position = p; }
+voxelgridnode::voxelgridnode(vertex p, int c)
+{ Position = p; Color = c; }

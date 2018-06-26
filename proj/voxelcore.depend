@@ -1,0 +1,154 @@
+# depslib dependency file v1.0
+1528714202 source:/home/mstrehlow/Developer/tests/voxelcore/camera.cpp
+	"camera.h"
+
+1528714107 /home/mstrehlow/Developer/tests/voxelcore/camera.h
+	<cstdlib>
+	"vertex.h"
+
+1528022840 /home/mstrehlow/Developer/tests/voxelcore/vertex.h
+	<cstdlib>
+
+1528194618 source:/home/mstrehlow/Developer/tests/voxelcore/color.cpp
+	"color.h"
+
+1528194609 /home/mstrehlow/Developer/tests/voxelcore/color.h
+	<cstdlib>
+
+1528273629 source:/home/mstrehlow/Developer/tests/voxelcore/display.cpp
+	"display.h"
+
+1528272333 /home/mstrehlow/Developer/tests/voxelcore/display.h
+	<cstdlib>
+	<SDL2/SDL.h>
+	"framebuffer.h"
+
+1529342980 /home/mstrehlow/Developer/tests/voxelcore/framebuffer.h
+	<cstdlib>
+	<cstring>
+	<cmath>
+	<iostream>
+	<algorithm>
+	"color.h"
+	"pixel.h"
+	"rectangle.h"
+
+1529319293 /home/mstrehlow/Developer/tests/voxelcore/pixel.h
+	<cstdlib>
+
+1528027894 /home/mstrehlow/Developer/tests/voxelcore/rectangle.h
+	<cstdlib>
+
+1528129285 source:/home/mstrehlow/Developer/tests/voxelcore/events.cpp
+	"events.h"
+
+1528128900 /home/mstrehlow/Developer/tests/voxelcore/events.h
+	<cstdlib>
+	<SDL2/SDL.h>
+
+1529858585 source:/home/mstrehlow/Developer/tests/voxelcore/fileio.cpp
+	"fileio.h"
+
+1529858542 /home/mstrehlow/Developer/tests/voxelcore/fileio.h
+	<cstdlib>
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<string>
+
+1528634472 source:/home/mstrehlow/Developer/tests/voxelcore/font.cpp
+	<font.h>
+
+1528556674 /home/mstrehlow/Developer/tests/voxelcore//font.h
+	<cstdlib>
+	<string>
+	<vector>
+	"fileio.h"
+	"fontdata.h"
+
+1529858542 /home/mstrehlow/Developer/tests/voxelcore//fileio.h
+	<cstdlib>
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<string>
+
+1528556641 /home/mstrehlow/Developer/tests/voxelcore//fontdata.h
+	<cstdlib>
+	<vector>
+
+1529593619 source:/home/mstrehlow/Developer/tests/voxelcore/framebuffer.cpp
+	"framebuffer.h"
+
+1529678428 source:/home/mstrehlow/Developer/tests/voxelcore/functions.cpp
+	<math.h>
+	<iostream>
+	"defines.h"
+	"camera.h"
+	"color.h"
+	"pixel.h"
+	"vertex.h"
+	"voxelgrid.h"
+	"framebuffer.h"
+	"font.h"
+
+1529857400 /home/mstrehlow/Developer/tests/voxelcore/defines.h
+
+1529870966 /home/mstrehlow/Developer/tests/voxelcore/voxelgrid.h
+	<cstdlib>
+	<vector>
+	"fileio.h"
+	"defines.h"
+	"vertex.h"
+	"voxel.h"
+	"color.h"
+	"voxelgridnode.h"
+
+1528273909 /home/mstrehlow/Developer/tests/voxelcore/voxel.h
+
+1529870163 /home/mstrehlow/Developer/tests/voxelcore/voxelgridnode.h
+	"vertex.h"
+	<vector>
+
+1528556674 /home/mstrehlow/Developer/tests/voxelcore/font.h
+	<cstdlib>
+	<string>
+	<vector>
+	"fileio.h"
+	"fontdata.h"
+
+1528556641 /home/mstrehlow/Developer/tests/voxelcore/fontdata.h
+	<cstdlib>
+	<vector>
+
+1529601920 source:/home/mstrehlow/Developer/tests/voxelcore/main.cpp
+	<cstdlib>
+	<iostream>
+	<SDL2/SDL.h>
+	<time.h>
+	"camera.h"
+	"display.h"
+	"events.h"
+	"framebuffer.h"
+	"voxel.h"
+	"voxelgrid.h"
+	"font.h"
+
+1528022207 source:/home/mstrehlow/Developer/tests/voxelcore/pixel.cpp
+	"pixel.h"
+
+1528027973 source:/home/mstrehlow/Developer/tests/voxelcore/rectangle.cpp
+	"rectangle.h"
+
+1528021685 source:/home/mstrehlow/Developer/tests/voxelcore/vertex.cpp
+	"vertex.h"
+
+1528041582 source:/home/mstrehlow/Developer/tests/voxelcore/voxel.cpp
+	"voxel.h"
+
+1529678393 source:/home/mstrehlow/Developer/tests/voxelcore/voxelgrid.cpp
+	"voxelgrid.h"
+
+1529185147 source:/home/mstrehlow/Developer/tests/voxelcore/voxelgridnode.cpp
+	"voxelgridnode.h"
+

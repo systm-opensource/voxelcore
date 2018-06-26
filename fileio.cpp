@@ -1,10 +1,22 @@
 #include "fileio.h"
 
+bool fileio::doesFileExist(std::string filename)
+{
+	std::ifstream f(filename.c_str());
+    return f.good();
+}
+
 void fileio::openFileForWriting(std::string fn)
 { out.open (fn, std::ofstream::binary | std::ios::out); }
 
 void fileio::openFileForReading(std::string fn)
 { in.open (fn, std::ifstream::binary | std::ios::in); }
+
+void fileio::jumpToPositionInFile(int seekpos)
+{ in.seekg(0, in.beg+seekpos); }
+
+void fileio::jumpToBeginningOfFile()
+{ in.seekg(0, in.beg); }
 
 void fileio::closeFileForWriting()
 { out.close(); }
@@ -60,3 +72,7 @@ std::string fileio::readString()
 	// Return it
 	return res;
 }
+
+
+int fileio::CurrentStreamPosition()
+{ return in.tellg(); }

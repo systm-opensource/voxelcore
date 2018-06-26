@@ -69,7 +69,7 @@ int main(int argc, char **argv[])
 
 	// OK! So let's generate some random voxel data
 	srand (time(NULL));
-	
+
 	// First generate the colors
 	int numcols = 0;
 	while (numcols < 500)
@@ -86,29 +86,6 @@ int main(int argc, char **argv[])
 		if (cexist == false) { Voxelgrid->Colors.push_back(c); numcols++; }
 	}
 
-	// Now generate 5000 voxels with random locations and random colors
-	int numvox = 0;
-	while (numvox < 5000)
-	{
-		voxel v(rand()%50, rand()%50, rand()%50, rand()%500);
-		bool vexist = false;
-		for (int i=0; i<Voxelgrid->Voxels.size(); i++)
-		{
-			if (Voxelgrid->Voxels[i].x == v.x &&
-				Voxelgrid->Voxels[i].y == v.y &&
-				Voxelgrid->Voxels[i].z == v.z)
-			{ vexist = true; break; }
-		}
-		if (vexist == false)
-		{
-			Voxelgrid->Voxels.push_back(v);
-			numvox++;
-		}
-	}
-
-	// Voxels added
-
-
 	// For FPS tracking
 	fps_start = SDL_GetTicks();
 	fps_then = SDL_GetTicks();
@@ -120,7 +97,7 @@ int main(int argc, char **argv[])
 	// Main render loop
 	bool render=true;
 	int debugfps = 0;
-	
+
 	// Camera movement speed
 	float camspeed = 0.2f;
 	// Camera rotation speed
@@ -130,7 +107,7 @@ int main(int argc, char **argv[])
 	bool camMoved = false;
 	// Did the model move?
 	bool gridMoved = false;
-	
+
 	// One time adjustment
 	adjustVoxelgridPosition(Voxelgrid, FB, Camera);
 
@@ -140,7 +117,7 @@ int main(int argc, char **argv[])
 
 		if (showVoxelgridOutline == true)
 		{ drawVoxelgridOutline(Voxelgrid, FB, Camera, FB->FOV);  }
-		
+
 		//renderVoxels(Voxelgrid, FB, Camera);
 
 		// Some informative texts
@@ -159,7 +136,7 @@ int main(int argc, char **argv[])
 		fps++;
 
 		fps_start = SDL_GetTicks();
-		
+
 		if (fps_start - fps_then >= 1000)
 		{ debugfps = fps; fps = 0; fps_then = fps_start; }
 

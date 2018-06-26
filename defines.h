@@ -1,4 +1,8 @@
 
+// Some Objective-C like bools
+#define YES				true
+#define NO				false
+
 // PI
 #define PI 				3.1415f
 

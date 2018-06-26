@@ -12,25 +12,17 @@
 class voxelgridnode
 {
 public:
+	// Size of this node in all directions
+	float Size;
+
 	// Position of this node
 	vertex Position;
 
-	// Size of this node in all dimensions
-	float Size;
+	// Array position of the dominant color in this node
+	int Color;
 
-	// Distance to camera - this then also decides the LOD for this node
-	float Distance;
-
-	// Ranges for this node
-	std::vector<float> RangeX;
-	std::vector<float> RangeY;
-	std::vector<float> RangeZ;
-
-	// Parent of this node
-	voxelgridnode *Parent;
-
-	// Set the location when constructing the node
-	voxelgridnode(vertex p);
+	// Set the location and dominant/average color when constructing the node
+	voxelgridnode(vertex p, int c);
 };
 
 #endif
